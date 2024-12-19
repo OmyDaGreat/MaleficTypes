@@ -1,6 +1,6 @@
 package xyz.malefic
 
-import com.johndoe.library.Views
+import xyz.malefic.types.Views
 import javax.swing.JFrame
 
 class App {

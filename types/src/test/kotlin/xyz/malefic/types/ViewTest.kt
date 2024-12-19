@@ -1,4 +1,4 @@
-package com.johndoe.library
+package xyz.malefic.types
 
 import kotlin.test.Test
 import kotlin.test.assertEquals

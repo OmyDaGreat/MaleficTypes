@@ -1,4 +1,4 @@
-package com.johndoe.library
+package xyz.malefic.types
 
 import javax.swing.JLabel
 

@@ -1,4 +1,4 @@
-package com.johndoe.library
+package xyz.malefic.types
 
 public object Views {
     public fun create(): View {
