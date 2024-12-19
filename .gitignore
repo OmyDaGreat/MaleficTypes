@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+._*
+
+# Gradle
+.gradle/
+build/
+local.properties
+
+# IntelliJ
+*.iml
+.idea/
+out/
+
+# VSCode
+bin/
+.qodo
