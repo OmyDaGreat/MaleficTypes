@@ -1,97 +1,116 @@
-import com.vanniktech.maven.publish.JavadocJar
-import com.vanniktech.maven.publish.KotlinJvm
-import com.vanniktech.maven.publish.MavenPublishBaseExtension
-import com.vanniktech.maven.publish.MavenPublishBasePlugin
-import com.vanniktech.maven.publish.SonatypeHost
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jlleitschuh.gradle.ktlint.KtlintExtension
-import org.jlleitschuh.gradle.ktlint.KtlintPlugin
+import cn.lalaki.pub.BaseCentralPortalPlusExtension.PublishingType
 
-val developerId: String by project
-val developerName: String by project
-val developerUrl: String by project
-val releaseGroup: String by project
-val releaseArtifact: String by project
-val releaseVersion: String by project
-val releaseDescription: String by project
-val releaseUrl: String by project
-
-val jdkVersion = JavaLanguageVersion.of(libs.versions.jdk.get())
-val jreVersion = JavaLanguageVersion.of(libs.versions.jre.get())
+val user = "OmyDaGreat"
+val repo = "MaleficTypes"
+val g = "xyz.malefic"
+val artifact = "types"
+val v = "1.0.0"
+val localMavenRepo = uri(layout.buildDirectory.dir("repo").get())
 
 plugins {
-    kotlin("jvm") version libs.versions.kotlin apply false
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.central)
     alias(libs.plugins.dokka)
-    alias(libs.plugins.gradle.ktlint) apply false
-    alias(libs.plugins.maven.publish) apply false
+    `maven-publish`
+    signing
 }
 
-allprojects {
-    group = releaseGroup
-    version = releaseVersion
+group = g
+version = v
+
+repositories {
+    mavenCentral()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    google()
 }
 
-subprojects {
-    plugins.withType<KotlinPluginWrapper>().configureEach {
-        the<KotlinJvmProjectExtension>().jvmToolchain(jdkVersion.asInt())
+dependencies {
+    testImplementation(kotlin("test"))
+}
+
+spotless {
+    kotlin {
+        ktlint()
     }
-    plugins.withType<KtlintPlugin>().configureEach {
-        the<KtlintExtension>()
-            .version
-            .set(libs.versions.ktlint.get())
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    withJavadocJar()
+    withSourcesJar()
+}
+
+kotlin {
+    jvmToolchain {
+        this.languageVersion.set(JavaLanguageVersion.of(17))
     }
-    plugins.withType<MavenPublishBasePlugin> {
-        configure<MavenPublishBaseExtension> {
-            configure(KotlinJvm(JavadocJar.Dokka("dokkaJavadoc")))
-            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-            signAllPublications()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = g
+            artifactId = artifact
+            version = v
+
+            from(components["java"])
+
             pom {
-                name.set(project.name)
-                description.set(releaseDescription)
-                url.set(releaseUrl)
+                name.set(repo)
+                description.set("A union types framework for Kotlin/JVM")
+                url.set("https://github.com/$user/$repo")
+                developers {
+                    developer {
+                        name.set("Om Gupta")
+                        email.set("ogupta4242@gmail.com")
+                    }
+                }
                 licenses {
                     license {
                         name.set("MIT License")
                         url.set("https://opensource.org/licenses/MIT")
                     }
                 }
-                developers {
-                    developer {
-                        id.set(developerId)
-                        name.set(developerName)
-                        url.set(developerUrl)
-                    }
-                }
                 scm {
-                    url.set(releaseUrl)
-                    connection.set("scm:git:https://github.com/$developerId/$releaseArtifact.git")
-                    developerConnection.set(
-                        "scm:git:ssh://git@github.com/$developerId/$releaseArtifact.git",
-                    )
+                    connection.set("scm:git:git://github.com/$user/$repo.git")
+                    developerConnection.set("scm:git:ssh://github.com/$user/$repo.git")
+                    url.set("https://github.com/$user/$repo")
                 }
             }
         }
-    }
-
-    tasks {
-        withType<JavaCompile>().configureEach {
-            options.release = jreVersion.asInt()
-        }
-        withType<KotlinCompile>().configureEach {
-            compilerOptions.jvmTarget
-                .set(JvmTarget.fromTarget(JavaVersion.toVersion(jreVersion).toString()))
+        repositories {
+            maven {
+                url = localMavenRepo
+            }
         }
     }
 }
 
-tasks {
-    named(LifecycleBasePlugin.CLEAN_TASK_NAME) {
-        delete(layout.buildDirectory)
+signing {
+    useGpgCmd()
+    sign(publishing.publications)
+}
+
+centralPortalPlus {
+    url = localMavenRepo
+    username = System.getenv("centralPortalUsername") ?: ""
+    password = System.getenv("centralPortalPassword") ?: ""
+    publishingType = PublishingType.AUTOMATIC
+}
+
+tasks.apply {
+    build {
+        dependsOn(dokkaGenerate)
     }
-    dokkaHtmlMultiModule {
-        outputDirectory.set(layout.buildDirectory.dir("dokka/dokka/"))
+    test {
+        useJUnitPlatform()
+    }
+}
+
+dokka {
+    dokkaPublications.html {
+        outputDirectory.set(layout.buildDirectory.dir("dokka"))
     }
 }
