@@ -26,7 +26,7 @@ module.exports = {
     {value: 'update', name: 'update:      Update external tools or libraries'},
   ],
 
-  scopes: [{name: 'main'}, {name: 'project'}],
+  scopes: [{name: 'union'}, {name: 'project'}],
 
   usePreparedCommit: false, // to re-use commit from ./.git/COMMIT_EDITMSG
   allowTicketNumber: false,
@@ -43,7 +43,6 @@ module.exports = {
       {name: 'readme'},
     ],
     version: [
-      {name: '1.0.0'},
       {name: '1.0.1'},
       {name: '1.0.2'},
       {name: '1.1.0'},

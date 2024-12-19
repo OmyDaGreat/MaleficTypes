@@ -3,16 +3,14 @@ package xyz.malefic.types
 import kotlin.reflect.KClass
 
 /**
- * Represents a union of two types, A and B, where only one value can be held at a time.
+ * Represents a union type that can hold a value of either type A or type B, but not both.
+ * Provides utility functions to check the type of the held value, retrieve it, and create
+ * instances of the union. Ensures that only one of the types is non-null at any time.
  *
  * @param A The first type parameter.
  * @param B The second type parameter.
- * @property first The optional value of type A.
- * @property second The optional value of type B.
- *
- * @constructor Ensures that only one of the two values is non-null.
  */
-class Union<A, B>(
+class Union<A, B> internal constructor(
     private val first: A? = null,
     private val second: B? = null,
 ) {
@@ -133,8 +131,8 @@ class Union<A, B>(
          */
         inline fun <reified A, reified B> of(value: Any): Union<A, B> =
             when (value) {
-                is A -> Union(first = value)
-                is B -> Union(second = value)
+                is A -> ofFirst(value)
+                is B -> ofSecond(value)
                 else -> throw IllegalArgumentException("Value must be of type A or B.")
             }
     }
