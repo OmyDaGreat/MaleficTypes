@@ -6,7 +6,6 @@ $dokka.location:xyz.malefic.types/Union.Companion/of/#kotlin.Any/PointingToDecla
 $dokka.location:xyz.malefic.types/Union.Companion/ofFirst/#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/-companion/of-first.html
 $dokka.location:xyz.malefic.types/Union.Companion/ofSecond/#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/-companion/of-second.html
 $dokka.location:xyz.malefic.types/Union///PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/index.html
-$dokka.location:xyz.malefic.types/Union/Union/#TypeParam(bounds=[kotlin.Any?])?#TypeParam(bounds=[kotlin.Any?])?/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/-union.html
 $dokka.location:xyz.malefic.types/Union/equals/#kotlin.Any?/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/equals.html
 $dokka.location:xyz.malefic.types/Union/getFirst/#/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/get-first.html
 $dokka.location:xyz.malefic.types/Union/getSecond/#/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/get-second.html
