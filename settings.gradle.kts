@@ -1,11 +1,10 @@
-pluginManagement.repositories {
-    gradlePluginPortal()
-    mavenCentral()
+pluginManagement {
+    repositories {
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        google()
+        gradlePluginPortal()
+        mavenCentral()
+    }
 }
-dependencyResolutionManagement.repositories.mavenCentral()
 
 rootProject.name = "MaleficTypes"
-
-include("types", "types-extension")
-include("sample")
-include("website")

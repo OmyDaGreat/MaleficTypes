@@ -1,6 +1,7 @@
 module.exports = {
   types: [
     {value: 'feat', name: 'feat:     A new feature'},
+    {value: 'version', name: 'version:     A new version posted on Maven Central'},
     {value: 'fix', name: 'fix:      A bug fix'},
     {value: 'docs', name: 'docs:     Documentation only changes'},
     {
@@ -15,7 +16,7 @@ module.exports = {
       value: 'perf',
       name: 'perf:     A code change that improves performance',
     },
-    {value: 'test', name: 'test:     Adding missing tests'},
+    {value: 'test', name: 'test:     Adding or improving tests'},
     {
       value: 'chore',
       name: 'chore:    Changes to the build process or auxiliary tools\n            and libraries such as documentation generation',
@@ -25,7 +26,7 @@ module.exports = {
     {value: 'update', name: 'update:      Update external tools or libraries'},
   ],
 
-  scopes: [{name: 'sample'}, {name: 'types'}, {name: 'extension'}, {name: 'website'}, {name: 'project'}],
+  scopes: [{name: 'main'}, {name: 'project'}],
 
   usePreparedCommit: false, // to re-use commit from ./.git/COMMIT_EDITMSG
   allowTicketNumber: false,
@@ -40,6 +41,12 @@ module.exports = {
       {name: 'gradle'},
       {name: 'cz'},
       {name: 'readme'},
+    ],
+    version: [
+      {name: '1.0.0'},
+      {name: '1.0.1'},
+      {name: '1.0.2'},
+      {name: '1.1.0'},
     ]
   },
   // override the messages, defaults are as follows

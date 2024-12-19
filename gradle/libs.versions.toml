@@ -1,29 +1,13 @@
 [versions]
-jdk = "21"
-jre = "8"
-kotlin = "2.1.0"
-ktlint = "1.3.1"
+spotless = "7.0.0.BETA4"
+central = "1.2.5"
 dokka = "2.0.0"
-kover = "0.8.3"
-gradle-ktlint = "12.1.1"
-maven-publish = "0.29.0"
-git-publish = "4.2.2"
-pages = "0.1"
-rulebook-ktlint = "0.1"
-rulebook-ktlint-compose = "0.4.22"
-kotlinx-coroutines = "1.8.1"
-truth = "1.4.4"
+kotlin = "2.1.0"
 
 [libraries]
-rulebook-ktlint = { group = "com.hanggrian.rulebook", name = "rulebook-ktlint", version.ref = "rulebook-ktlint" }
-rulebook-ktlint-compose = { group = "io.nlopez.compose.rules", name = "ktlint", version.ref = "rulebook-ktlint-compose" }
-kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
-truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 
 [plugins]
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+central = { id = "cn.lalaki.central", version.ref = "central"}
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
-kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "gradle-ktlint" }
-maven-publish = { id = "com.vanniktech.maven.publish.base", version.ref = "maven-publish" }
-git-publish = { id = "org.ajoberstar.git-publish", version.ref = "git-publish" }
-pages = { id = "com.hanggrian.pages", version.ref = "pages" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
