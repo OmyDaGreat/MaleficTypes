@@ -9,8 +9,8 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation "com.johndoe:library:$version"
-    implementation "com.johndoe:library-extension:$version"
+    implementation "xyz.malefic:types:$version"
+    implementation "xyz.malefic:types-extension:$version"
 }
 ```
 
