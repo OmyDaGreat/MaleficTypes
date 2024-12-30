@@ -148,7 +148,7 @@ class UnionTest {
     // Verifying type erasure behavior with generic type parameters
     @Test
     fun verify_type_erasure_with_generic_parameters() {
-        val union = Union.of<String, Int>("test")
+        val union: Union<String, Int> = Union.of("test")
 
         assertTrue(union.isFirst())
         assertFalse(union.isSecond())

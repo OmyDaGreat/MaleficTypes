@@ -23,7 +23,7 @@ module.exports = {
     },
     {value: 'WIP', name: 'WIP:      Work in progress'},
     {value: 'revert', name: 'revert:   Revert to a prior commit'},
-    {value: 'update', name: 'update:      Update external tools or libraries'},
+    {value: 'update', name: 'update:   Update external tools or libraries'},
   ],
 
   scopes: [{name: 'union'}, {name: 'project'}],
