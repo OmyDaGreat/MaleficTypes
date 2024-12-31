@@ -1,6 +1,7 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
 $dokka.location:xyz.malefic.types////PointingToDeclaration/-malefic-types/xyz.malefic.types/index.html
+$dokka.location:xyz.malefic.types//toUnion/kotlin.Any#/PointingToDeclaration/-malefic-types/xyz.malefic.types/to-union.html
 $dokka.location:xyz.malefic.types/Union.Companion///PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/-companion/index.html
 $dokka.location:xyz.malefic.types/Union.Companion/of/#kotlin.Any/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/-companion/of.html
 $dokka.location:xyz.malefic.types/Union.Companion/ofFirst/#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/-companion/of-first.html
