@@ -4,7 +4,7 @@ val user = "OmyDaGreat"
 val repo = "MaleficTypes"
 val g = "xyz.malefic"
 val artifact = "types"
-val v = "1.0.1"
+val v = "1.0.2"
 val localMavenRepo = uri(layout.buildDirectory.dir("repo").get())
 
 plugins {

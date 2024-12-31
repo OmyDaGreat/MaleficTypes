@@ -152,11 +152,11 @@ fun processUnion(union: Union<Int, String>) {
 
 fun main() {
     processUnion(Union.of(10))    // Output: Processing Int: 10
-    processUnion(Union.of("Hello")) // Output: Processing String: Hello
+    processUnion("Hello".toUnion()) // Output: Processing String: Hello
 }
 ```
 
-In these examples, `Union.of` is used directly within the function call, demonstrating how to create and use `Union` instances without storing them in variables first.
+In these examples, `Union.of` is used directly within the function call, demonstrating how to create and use `Union` instances without storing them in variables first. You can do the same with the `.toUnion()` function, converting any type to a union.
 
 ## License
 
