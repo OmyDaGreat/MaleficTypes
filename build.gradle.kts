@@ -4,7 +4,7 @@ val user = "OmyDaGreat"
 val repo = "MaleficTypes"
 val g = "xyz.malefic"
 val artifact = "types"
-val v = "1.0.2"
+val v = "2.0.0-BETA"
 val localMavenRepo = uri(layout.buildDirectory.dir("repo").get())
 
 plugins {
@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.spotless)
     alias(libs.plugins.central)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.ksp)
     `maven-publish`
     signing
 }
@@ -21,11 +22,12 @@ version = v
 
 repositories {
     mavenCentral()
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    google()
 }
 
 dependencies {
+    implementation(libs.ksp)
+    implementation(project(":processor"))
+    ksp(project(":processor"))
     testImplementation(kotlin("test"))
 }
 

@@ -1,6 +1,5 @@
-package xyz.malefic.tests
+package xyz.malefic.types
 
-import xyz.malefic.types.Union
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -9,7 +8,7 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class UnionTest {
+class ClassTest {
     // Creating Union instance with first value using ofFirst() factory method
     @Test
     fun test_create_union_with_first_value() {

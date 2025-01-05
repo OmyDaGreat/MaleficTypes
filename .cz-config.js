@@ -16,7 +16,7 @@ module.exports = {
       value: 'perf',
       name: 'perf:     A code change that improves performance',
     },
-    {value: 'test', name: 'test:     Adding or improving tests'},
+    {value: 'test', name: 'test:     Adding or improving types'},
     {
       value: 'chore',
       name: 'chore:    Changes to the build process or auxiliary tools\n            and libraries such as documentation generation',
@@ -26,7 +26,7 @@ module.exports = {
     {value: 'update', name: 'update:   Update external tools or libraries'},
   ],
 
-  scopes: [{name: 'union'}, {name: 'project'}],
+  scopes: [{name: 'union'}, {name: 'processor'}, {name: 'project'}],
 
   usePreparedCommit: false, // to re-use commit from ./.git/COMMIT_EDITMSG
   allowTicketNumber: false,
@@ -34,7 +34,7 @@ module.exports = {
   ticketNumberPrefix: 'TICKET-',
   ticketNumberRegExp: '\\d{1,5}',
 
-  // it needs to match the value for field type. Eg.: 'chore'
+  // it needs to match the value for field type. E.g.: 'chore'
   scopeOverrides: {
     chore: [
       {name: 'github'},
@@ -42,11 +42,7 @@ module.exports = {
       {name: 'cz'},
       {name: 'readme'},
     ],
-    version: [
-      {name: '1.0.1'},
-      {name: '1.0.2'},
-      {name: '1.1.0'},
-    ]
+    version: []
   },
   // override the messages, defaults are as follows
   messages: {

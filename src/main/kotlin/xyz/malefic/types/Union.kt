@@ -55,9 +55,9 @@ class Union<A, B> internal constructor(
      * @return true if the union contains a value of the specified type, false otherwise.
      */
     fun isType(type: KClass<*>): Boolean =
-        when (type) {
-            first?.javaClass?.kotlin -> isFirst()
-            second?.javaClass?.kotlin -> isSecond()
+        when {
+            first != null && type == first!!::class -> isFirst()
+            second != null && type == second!!::class -> isSecond()
             else -> false
         }
 
@@ -97,8 +97,8 @@ class Union<A, B> internal constructor(
      */
     override fun toString(): String =
         when {
-            isFirst() -> "Union(first=${first?.javaClass?.simpleName}: $first)"
-            isSecond() -> "Union(second=${second?.javaClass?.simpleName}: $second)"
+            isFirst() -> "Union(first=${first!!::class.simpleName}: $first)"
+            isSecond() -> "Union(second=${second!!::class.simpleName}: $second)"
             else -> "Union(empty)"
         }
 
