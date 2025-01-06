@@ -1,6 +1,10 @@
 # MaleficTypes
 
-## Table of Contents
+Welcome to the `MaleficTypes` library! This library provides a `Union` class that allows you to create a union type similar to those in JavaScript. A union type can hold a value of either type `A` or type `B`, but not both simultaneously. This class provides utility functions to manage and interact with the values it holds.
+
+---
+
+## 📚 Table of Contents
 1. [Introduction](#introduction)
 2. [Union Class Overview](#union-class-overview)
 3. [Creating Union Instances](#creating-union-instances)
@@ -23,11 +27,15 @@
    - [Benefits of Using the Plugin](#benefits-of-using-the-plugin)
 10. [License](#license)
 
-## Introduction
+---
+
+## 📝 Introduction
 
 The `MaleficTypes` library provides a `Union` class that allows you to create a union type similar to those in JavaScript. A union type can hold a value of either type `A` or type `B`, but not both simultaneously. This class provides utility functions to manage and interact with the values it holds.
 
-## Union Class Overview
+---
+
+## 🔍 Union Class Overview
 
 The `Union` class is a generic class defined as `Union<A, B>`, where `A` and `B` are the types of values it can hold. It ensures that only one of the types is non-null at any time.
 
@@ -43,7 +51,9 @@ class Union<A, B> internal constructor(
 }
 ```
 
-## Creating Union Instances
+---
+
+## 🛠️ Creating Union Instances
 
 ### Using `ofFirst`
 
@@ -70,7 +80,9 @@ val unionA: Union<Int, String> = Union.of(42)
 val unionB: Union = Union.of<Int, String>("Hello")
 ```
 
-## Checking the Held Value Type
+---
+
+## 🔍 Checking the Held Value Type
 
 You can check which type of value the `Union` holds using the `isFirst` and `isSecond` methods:
 
@@ -92,7 +104,9 @@ if (unionA.isType(Int::class)) {
 }
 ```
 
-## Retrieving Values
+---
+
+## 🔄 Retrieving Values
 
 To retrieve the value from the `Union`, use the `getFirst` or `getSecond` methods. These methods will throw an `IllegalStateException` if the value of the requested type is not present:
 
@@ -101,7 +115,9 @@ val valueA: Int = unionA.getFirst()
 val valueB: String = unionB.getSecond()
 ```
 
-## Equality and Hashing
+---
+
+## ⚖️ Equality and Hashing
 
 The `Union` class overrides the `equals` and `hashCode` methods to provide meaningful equality checks and hash codes based on the held value:
 
@@ -112,7 +128,9 @@ println(unionA == anotherUnionA) // true
 println(unionA.hashCode()) // Hash code based on the value 42
 ```
 
-## String Representation
+---
+
+## 📝 String Representation
 
 The `Union` class provides a `toString` method that indicates which type the `Union` holds and its value:
 
@@ -121,7 +139,9 @@ println(unionA.toString()) // Union(first=Integer: 42)
 println(unionB.toString()) // Union(second=String: Hello)
 ```
 
-## Examples
+---
+
+## 📖 Examples
 
 ### Basic Usage
 
@@ -171,7 +191,9 @@ The `MaleficTypes` library provides an additional tool to simplify the use of `U
 
 This feature is especially useful for library authors who want to expose functions with flexible parameter types without requiring users to interact directly with the `Union` API.
 
-## The Annotation and Plugin
+---
+
+## 🔧 The Annotation and Plugin
 
 ### 1. Add the Plugin and Dependencies
 
@@ -270,6 +292,8 @@ fun `test multiple Union parameter overloads`() {
 - **Cleaner Library APIs**: Reduces boilerplate code and enhances usability for consumers of your library.
 - **Flexibility**: Supports functions with any number of parameters and mixed `Union` and non-`Union` types.
 
-## License
+---
+
+## 📜 License
 
 This project is licensed under the terms of the [MIT License](LICENSE).
