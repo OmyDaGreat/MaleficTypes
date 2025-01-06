@@ -14,7 +14,14 @@
 8. [Examples](#examples)
    - [Basic Usage](#basic-usage)
    - [Using Union in Functions](#using-union-in-functions)
-9. [License](#license)
+   - [Union Overloads](#using-the-annotation-and-plugin-for-union-overloads)
+9. [The Annotation And Plugin](#the-annotation-and-plugin)
+   - [Add the Plugin](#1-add-the-plugin-and-dependencies)
+   - [Annotate Your Functions](#2-annotate-your-functions)
+   - [Generated Overloads](#3-generated-overloads)
+   - [Testing the Overloads](#4-testing-the-overloads)
+   - [Benefits of Using the Plugin](#benefits-of-using-the-plugin)
+10. [License](#license)
 
 ## Introduction
 
@@ -157,6 +164,111 @@ fun main() {
 ```
 
 In these examples, `Union.of` is used directly within the function call, demonstrating how to create and use `Union` instances without storing them in variables first. You can do the same with the `.toUnion()` function, converting any type to a union.
+
+### Using the Annotation and Plugin for Union Overloads
+
+The `MaleficTypes` library provides an additional tool to simplify the use of `Union` types in your functions: the `@UnionOverload` annotation. When used with the `xyz.malefic.types` plugin, this annotation automatically generates overloaded versions of your functions for all possible combinations of types in your `Union` parameters.
+
+This feature is especially useful for library authors who want to expose functions with flexible parameter types without requiring users to interact directly with the `Union` API.
+
+## The Annotation and Plugin
+
+### 1. Add the Plugin and Dependencies
+
+In your `build.gradle.kts`, apply the `com.google.devtools.ksp` and `xyz.malefic.types` plugins:
+
+```kotlin
+plugins {
+    id("com.google.devtools.ksp") version "..." //Choose version based on your Kotlin version but make sure to instantiate before the plugin
+    id("xyz.malefic.types") version "2.0.1" //Automatically applies the xyz.malefic:types library and xyz.malefic:types-processor through ksp
+}
+```
+
+### 2. Annotate Your Functions
+
+Add the `@UnionOverload` annotation to your functions that use `Union` types as parameters. This will signal the processor to generate overloads for all type combinations.
+
+#### Example 1: Single Parameter with `Union`
+
+```kotlin
+@UnionOverload
+fun processSingle(value: Union<String, Int>): String =
+    when {
+        value.isFirst() -> "First: ${value.getFirst()}"
+        value.isSecond() -> "Second: ${value.getSecond()}"
+        else -> "Invalid"
+    }
+```
+
+#### Example 2: Multiple Parameters with `Union`
+
+```kotlin
+@UnionOverload
+fun processMultiple(
+    name: String,
+    value: Union<String, Int>,
+    scale: Union<Float, Double>,
+): String =
+    "Name: $name, Value: ${if (value.isFirst()) value.getFirst() else value.getSecond()}, Scale: ${if (scale.isFirst()) {
+        scale.getFirst()
+    } else {
+        scale.getSecond()
+    }}"
+```
+
+### 3. Generated Overloads
+
+The plugin will generate overloads for every combination of types in your `Union` parameters. For the `processMultiple` example, it would create:
+
+```kotlin
+fun processMultiple(name: String, value: String, scale: Float) = 
+    processMultiple(name, Union.ofFirst(value), Union.ofFirst(scale))
+
+fun processMultiple(name: String, value: Int, scale: Double) = 
+    processMultiple(name, Union.ofSecond(value), Union.ofSecond(scale))
+
+fun processMultiple(name: String, value: String, scale: Double) = 
+    processMultiple(name, Union.ofFirst(value), Union.ofSecond(scale))
+
+fun processMultiple(name: String, value: Int, scale: Float) = 
+    processMultiple(name, Union.ofSecond(value), Union.ofFirst(scale))
+```
+
+This allows users to call the function with any of these combinations without explicitly creating `Union` instances or even having the library.
+
+### 4. Testing the Overloads
+
+To verify the correctness of generated overloads, you can write tests like this:
+
+```kotlin
+@Test
+fun `test single Union parameter overloads`() {
+    val result1 = processSingle("Hello") // Calls Union.ofFirst<String, Int>("Hello")
+    val result2 = processSingle(42) // Calls Union.ofSecond<String, Int>(42)
+
+    assertEquals("First: Hello", result1)
+    assertEquals("Second: 42", result2)
+}
+
+@Test
+fun `test multiple Union parameter overloads`() {
+    val result1 = processMultiple("Test", "StringValue", 1.5f) // Union.ofFirst for both
+    val result2 = processMultiple("Test", 42, 2.0) // Union.ofSecond for both
+    val result3 = processMultiple("Test", "StringValue", 2.0) // Mixed Union.ofFirst and Union.ofSecond
+    val result4 = processMultiple("Test", 42, 1.5f) // Mixed Union.ofSecond and Union.ofFirst
+
+    assertEquals("Name: Test, Value: StringValue, Scale: 1.5", result1)
+    assertEquals("Name: Test, Value: 42, Scale: 2.0", result2)
+    assertEquals("Name: Test, Value: StringValue, Scale: 2.0", result3)
+    assertEquals("Name: Test, Value: 42, Scale: 1.5", result4)
+}
+```
+
+### Benefits of Using the Plugin
+
+- **Simplified Function Calls**: Users can call your functions directly with standard types (`String`, `Int`, etc.) without interacting with `Union` APIs.
+- **Cleaner Library APIs**: Reduces boilerplate code and enhances usability for consumers of your library.
+- **Flexibility**: Supports functions with any number of parameters and mixed `Union` and non-`Union` types.
 
 ## License
 

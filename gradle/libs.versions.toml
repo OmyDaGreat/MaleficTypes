@@ -1,16 +1,16 @@
 [versions]
-spotless = "7.0.0.BETA4"
 central = "1.2.5"
 dokka = "2.0.0"
-kotlin = "2.1.0"
-ksp = "2.1.0-1.0.29"
+kotlin = "2.0.21"
+ksp = "2.0.21-1.0.28"
+publish = "1.3.0"
 
 [libraries]
 ksp = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
 
 [plugins]
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 central = { id = "cn.lalaki.central", version.ref = "central" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+gradle-publish = { id = "com.gradle.plugin-publish", version.ref = "publish" }
