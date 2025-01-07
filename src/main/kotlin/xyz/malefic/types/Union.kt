@@ -11,8 +11,8 @@ import kotlin.reflect.KClass
  * @param B The second type parameter.
  */
 class Union<A, B> internal constructor(
-    private val first: A? = null,
-    private val second: B? = null,
+    val first: A? = null,
+    val second: B? = null,
 ) {
     init {
         require((first == null) xor (second == null)) { "Either must hold exactly one value at a time." }
@@ -33,20 +33,11 @@ class Union<A, B> internal constructor(
     fun isSecond(): Boolean = second != null
 
     /**
-     * Retrieves the value of type A from the union.
+     * Retrieves the non-null value held by the union.
      *
-     * @return The value of type A if present.
-     * @throws IllegalStateException if no value of type A is present.
+     * @return The value of either type A or type B.
      */
-    fun getFirst(): A = first ?: throw IllegalStateException("No value of type A present.")
-
-    /**
-     * Retrieves the value of type B from the union.
-     *
-     * @return The value of type B if present.
-     * @throws IllegalStateException if no value of type B is present.
-     */
-    fun getSecond(): B = second ?: throw IllegalStateException("No value of type B present.")
+    fun get() = (first ?: second)!!
 
     /**
      * Determines if the union holds a value of the specified type.
@@ -56,8 +47,8 @@ class Union<A, B> internal constructor(
      */
     fun isType(type: KClass<*>): Boolean =
         when {
-            first != null && type == first!!::class -> isFirst()
-            second != null && type == second!!::class -> isSecond()
+            isFirst() && type == first!!::class -> isFirst()
+            isSecond() && type == second!!::class -> isSecond()
             else -> false
         }
 
@@ -72,11 +63,7 @@ class Union<A, B> internal constructor(
         if (this === other) return true
         if (other !is Union<*, *>) return false
 
-        return when {
-            isFirst() && other.isFirst() -> first == other.first
-            isSecond() && other.isSecond() -> second == other.second
-            else -> false
-        }
+        return get() == other.get()
     }
 
     /**
@@ -97,8 +84,8 @@ class Union<A, B> internal constructor(
      */
     override fun toString(): String =
         when {
-            isFirst() -> "Union(first=${first!!::class.simpleName}: $first)"
-            isSecond() -> "Union(second=${second!!::class.simpleName}: $second)"
+            isFirst() -> "Union(${first!!::class.simpleName}: $first)"
+            isSecond() -> "Union(${second!!::class.simpleName}: $second)"
             else -> "Union(empty)"
         }
 

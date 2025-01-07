@@ -4,7 +4,7 @@ val user: String by properties
 val repo: String by properties
 val g: String by properties
 val artifact: String by properties
-val v = "2.0.1"
+val v: String by properties
 val localMavenRepo = uri(layout.buildDirectory.dir("repo").get())
 
 plugins {

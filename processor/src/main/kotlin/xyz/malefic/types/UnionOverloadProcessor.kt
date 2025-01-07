@@ -87,7 +87,7 @@ class UnionOverloadProcessor(
                         .arguments[1]
                         .type!!
                         .resolve()
-                listOf(typeA to "ofFirst", typeB to "ofSecond")
+                listOf(typeA, typeB) // List of types for each Union parameter
             }
 
         // Cartesian product of combinations
@@ -102,7 +102,6 @@ class UnionOverloadProcessor(
                             combination[index]
                         }
                     replacement
-                        ?.first
                         ?.declaration
                         ?.qualifiedName
                         ?.asString() ?: param.type
@@ -116,7 +115,14 @@ class UnionOverloadProcessor(
                     val replacement =
                         unionParameters.find { it == param }?.let { unionParam ->
                             val index = unionParameters.indexOf(unionParam)
-                            combination[index].second.let { "Union.$it(${param.name!!.asString()})" }
+                            val typeA = combination[index].declaration.qualifiedName!!.asString()
+                            val typeB =
+                                if (combination[index] == typeCombinations[index][0]) {
+                                    typeCombinations[index][1].declaration.qualifiedName!!.asString()
+                                } else {
+                                    typeCombinations[index][0].declaration.qualifiedName!!.asString()
+                                }
+                            "Union.of<$typeA, $typeB>(${param.name!!.asString()})"
                         }
                     replacement ?: param.name!!.asString()
                 }
