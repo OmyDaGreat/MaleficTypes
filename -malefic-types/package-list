@@ -8,12 +8,13 @@ $dokka.location:xyz.malefic.types/Union.Companion/ofFirst/#TypeParam(bounds=[kot
 $dokka.location:xyz.malefic.types/Union.Companion/ofSecond/#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/-companion/of-second.html
 $dokka.location:xyz.malefic.types/Union///PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/index.html
 $dokka.location:xyz.malefic.types/Union/equals/#kotlin.Any?/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/equals.html
-$dokka.location:xyz.malefic.types/Union/getFirst/#/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/get-first.html
-$dokka.location:xyz.malefic.types/Union/getSecond/#/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/get-second.html
+$dokka.location:xyz.malefic.types/Union/first/#/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/first.html
+$dokka.location:xyz.malefic.types/Union/get/#/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/get.html
 $dokka.location:xyz.malefic.types/Union/hashCode/#/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/hash-code.html
 $dokka.location:xyz.malefic.types/Union/isFirst/#/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/is-first.html
 $dokka.location:xyz.malefic.types/Union/isSecond/#/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/is-second.html
 $dokka.location:xyz.malefic.types/Union/isType/#kotlin.reflect.KClass[*]/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/is-type.html
+$dokka.location:xyz.malefic.types/Union/second/#/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/second.html
 $dokka.location:xyz.malefic.types/Union/toString/#/PointingToDeclaration/-malefic-types/xyz.malefic.types/-union/to-string.html
 $dokka.location:xyz.malefic.types/UnionOverload///PointingToDeclaration/-malefic-types/xyz.malefic.types/-union-overload/index.html
 xyz.malefic.types
