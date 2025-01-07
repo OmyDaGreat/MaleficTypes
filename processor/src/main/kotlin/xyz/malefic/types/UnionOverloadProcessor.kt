@@ -9,6 +9,7 @@ import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSValueParameter
 import com.google.devtools.ksp.validate
 
@@ -33,6 +34,7 @@ class UnionOverloadProcessor(
         val packageName = function.packageName.asString()
         val functionName = function.simpleName.asString()
         val containingClass = function.parentDeclaration?.simpleName?.asString()
+        val extensionReceiver = function.extensionReceiver?.resolve()
 
         // Identify parameters
         val parameters = function.parameters
@@ -49,7 +51,7 @@ class UnionOverloadProcessor(
         fileBuilder.append("import $UNION_QUALIFIED\n\n")
 
         // Generate overloaded functions
-        val overloads = generateOverloads(functionName, parameters, unionParameters, containingClass)
+        val overloads = generateOverloads(functionName, parameters, unionParameters, containingClass, extensionReceiver)
         fileBuilder.append(overloads)
 
         val fileName = "${functionName}Overloads"
@@ -69,6 +71,7 @@ class UnionOverloadProcessor(
         parameters: List<KSValueParameter>,
         unionParameters: List<KSValueParameter>,
         containingClass: String?,
+        extensionReceiver: KSType?,
     ): String {
         val overloads = StringBuilder()
 
@@ -101,13 +104,11 @@ class UnionOverloadProcessor(
                             val index = unionParameters.indexOf(unionParam)
                             combination[index]
                         }
-                    replacement
-                        ?.declaration
-                        ?.qualifiedName
-                        ?.asString() ?: param.type
-                        .resolve()
-                        .declaration.qualifiedName!!
-                        .asString()
+                    replacement?.declaration?.qualifiedName?.asString()
+                        ?: param.type
+                            .resolve()
+                            .declaration.qualifiedName!!
+                            .asString()
                 }
 
             val argumentList =
@@ -115,24 +116,34 @@ class UnionOverloadProcessor(
                     val replacement =
                         unionParameters.find { it == param }?.let { unionParam ->
                             val index = unionParameters.indexOf(unionParam)
-                            val typeA = combination[index].declaration.qualifiedName!!.asString()
-                            val typeB =
-                                if (combination[index] == typeCombinations[index][0]) {
-                                    typeCombinations[index][1].declaration.qualifiedName!!.asString()
-                                } else {
-                                    typeCombinations[index][0].declaration.qualifiedName!!.asString()
-                                }
-                            "Union.of<$typeA, $typeB>(${param.name!!.asString()})"
+                            if (combination[index] == typeCombinations[index][0]) {
+                                "Union.ofFirst(${param.name!!.asString()})"
+                            } else {
+                                "Union.ofSecond(${param.name!!.asString()})"
+                            }
                         }
                     replacement ?: param.name!!.asString()
                 }
 
-            overloads.append("fun ${containingClass?.let { "$it." } ?: ""}$functionName(")
+            overloads.append("fun ")
+            if (containingClass != null) {
+                overloads.append("$containingClass.")
+            }
+            extensionReceiver?.let { receiver ->
+                overloads.append("${receiver.declaration.qualifiedName!!.asString()}.")
+            }
+            overloads.append("$functionName(")
             parameterList.forEachIndexed { index, type ->
                 overloads.append("${parameters[index].name!!.asString()}: $type, ")
             }
             overloads.setLength(overloads.length - 2) // Remove trailing ", "
-            overloads.append(") = $functionName(")
+            overloads.append(") = ")
+
+            if (containingClass != null) {
+                overloads.append("this.$functionName(")
+            } else {
+                overloads.append("$functionName(")
+            }
             overloads.append(argumentList.joinToString(", "))
             overloads.append(")\n\n")
         }
