@@ -202,7 +202,7 @@ In your `build.gradle.kts`, apply the `com.google.devtools.ksp` and `xyz.malefic
 ```kotlin
 plugins {
     id("com.google.devtools.ksp") version "..." //Choose version based on your Kotlin version but make sure to instantiate before the plugin
-    id("xyz.malefic.types") version "2.0.1" //Automatically applies the xyz.malefic:types library and xyz.malefic:types-processor through ksp
+    id("xyz.malefic.types") version "2.1.1" //Automatically applies the xyz.malefic:types library and xyz.malefic:types-processor through ksp
 }
 ```
 

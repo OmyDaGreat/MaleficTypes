@@ -3,7 +3,7 @@ package xyz.malefic.types
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-const val VERSION = "2.1.0"
+const val VERSION = "2.1.1"
 
 class TypesPlugin : Plugin<Project> {
     override fun apply(project: Project) {

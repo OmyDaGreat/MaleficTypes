@@ -11,6 +11,7 @@ import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSValueParameter
+import com.google.devtools.ksp.symbol.Modifier
 import com.google.devtools.ksp.validate
 
 private const val UNION_QUALIFIED = "xyz.malefic.types.Union"
@@ -35,6 +36,7 @@ class UnionOverloadProcessor(
         val functionName = function.simpleName.asString()
         val containingClass = function.parentDeclaration?.simpleName?.asString()
         val extensionReceiver = function.extensionReceiver?.resolve()
+        val isInfix = function.modifiers.contains(Modifier.INFIX)
 
         // Identify parameters
         val parameters = function.parameters
@@ -51,7 +53,7 @@ class UnionOverloadProcessor(
         fileBuilder.append("import $UNION_QUALIFIED\n\n")
 
         // Generate overloaded functions
-        val overloads = generateOverloads(functionName, parameters, unionParameters, containingClass, extensionReceiver)
+        val overloads = generateOverloads(functionName, parameters, unionParameters, containingClass, extensionReceiver, isInfix)
         fileBuilder.append(overloads)
 
         val fileName = "${functionName}Overloads"
@@ -72,6 +74,7 @@ class UnionOverloadProcessor(
         unionParameters: List<KSValueParameter>,
         containingClass: String?,
         extensionReceiver: KSType?,
+        isInfix: Boolean,
     ): String {
         val overloads = StringBuilder()
 
@@ -90,10 +93,9 @@ class UnionOverloadProcessor(
                         .arguments[1]
                         .type!!
                         .resolve()
-                listOf(typeA, typeB) // List of types for each Union parameter
+                listOf(typeA, typeB)
             }
 
-        // Cartesian product of combinations
         val combinations = cartesianProduct(typeCombinations)
 
         for (combination in combinations) {
@@ -125,27 +127,30 @@ class UnionOverloadProcessor(
                     replacement ?: param.name!!.asString()
                 }
 
-            overloads.append("fun ")
-            if (containingClass != null) {
-                overloads.append("$containingClass.")
-            }
-            extensionReceiver?.let { receiver ->
-                overloads.append("${receiver.declaration.qualifiedName!!.asString()}.")
-            }
-            overloads.append("$functionName(")
-            parameterList.forEachIndexed { index, type ->
-                overloads.append("${parameters[index].name!!.asString()}: $type, ")
-            }
-            overloads.setLength(overloads.length - 2) // Remove trailing ", "
-            overloads.append(") = ")
+            val parameterDefinitions =
+                parameters
+                    .mapIndexed { index, param ->
+                        "${param.name!!.asString()}: ${parameterList[index]}"
+                    }.joinToString(", ")
 
-            if (containingClass != null) {
-                overloads.append("this.$functionName(")
+            if (isInfix && parameters.size == 1) {
+                // Handle infix function with a single parameter
+                overloads.append("infix fun ")
+                extensionReceiver?.let { receiver ->
+                    overloads.append("${receiver.declaration.qualifiedName!!.asString()}.")
+                }
+                overloads.append("${containingClass?.let { "$it." } ?: ""}$functionName($parameterDefinitions) = ")
+                extensionReceiver?.let { overloads.append("this ") }
+                overloads.append("$functionName ${argumentList[0]}\n\n")
             } else {
-                overloads.append("$functionName(")
+                // Handle regular or extension function
+                overloads.append("fun ")
+                extensionReceiver?.let { receiver ->
+                    overloads.append("${receiver.declaration.qualifiedName!!.asString()}.")
+                }
+                overloads.append("${containingClass?.let { "$it." } ?: ""}$functionName($parameterDefinitions) = ")
+                overloads.append("$functionName(${argumentList.joinToString(", ")})\n\n")
             }
-            overloads.append(argumentList.joinToString(", "))
-            overloads.append(")\n\n")
         }
 
         return overloads.toString()
