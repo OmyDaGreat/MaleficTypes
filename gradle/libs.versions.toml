@@ -3,7 +3,7 @@ central = "1.2.6"
 dokka = "2.0.0"
 kotlin = "2.0.21"
 ksp = "2.0.21-1.0.28"
-publish = "1.3.0"
+publish = "1.3.1"
 
 [libraries]
 ksp = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
