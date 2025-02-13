@@ -1,5 +1,5 @@
 [versions]
-central = "1.2.7"
+central = "1.2.8"
 dokka = "2.0.0"
 kotlin = "2.1.10"
 ksp = "2.1.10-1.0.29"
