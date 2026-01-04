@@ -1,6 +1,6 @@
 [versions]
 central = "2.0.2"
-dokka = "2.0.0"
+dokka = "2.1.0"
 kotlin = "2.3.0"
 ksp = "2.1.21-2.0.1"
 publish = "2.0.0"
