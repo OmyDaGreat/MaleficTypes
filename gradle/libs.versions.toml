@@ -2,7 +2,7 @@
 central = "2.0.2"
 dokka = "2.0.0"
 kotlin = "2.3.0"
-ksp = "2.1.21-2.0.1"
+ksp = "2.3.4"
 publish = "2.0.0"
 
 [libraries]
